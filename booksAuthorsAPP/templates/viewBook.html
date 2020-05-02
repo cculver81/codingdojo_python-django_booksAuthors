@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Document</title>
+</head>
+
+
+<body>
+    <header class="jumbotron jumbotron-fluid">
+        <div class="text-center">
+            <h2>Books and Authors with Templates</h2>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="row">
+            <h4>{{ bookInfo.title }}</h4>
+        </div>
+
+        <div class="row col-sm-12">
+            <h6>
+                <label for="ID">ID:</label>
+                <span name="ID">{{ bookInfo.id }}</span>
+            </h6>
+        </div>
+
+        <div class="row col-sm-12">
+            <label for="description">Description:</label>
+        </div>
+        
+        <div class="row col-sm-12">
+            <textarea name="description" cols="100" rows="5">{{ bookInfo.description }}</textarea>
+        </div>
+        <br>
+
+        <div class="row col-sm-12">
+            <label for="author">Author</label>
+        </div>
+
+        <div class="row col-sm-12">
+            <ul name="author">              
+            {% if bookAuthors.count == 0 %}
+                <li>No assigned Author</li>
+            {% else %}
+                {% for author in bookAuthors %}
+                    <li>{{ author.fname }} {{ author.lname }}</li>
+                {% endfor %}
+            {% endif %}
+            </ul>
+        </div>
+
+            <form action="/addAuthorToBook/{{ bookInfo.id }}" method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-sm-5">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text" for="inputGroupSelect01">Options</label>                        
+                            </div>
+                            <select class="custom-select" name="addAuthorToBook">
+                                <option selected>Add Author</option>
+                                    {% for author in allAuthors%}
+                                        <option value="{{author.id}}">{{author.fname}} {{ author.lname }}</option>
+                                    {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+        
+                    <div class="col-sm-1">
+                        <input type="submit" class="btn btn-primary" value="Add">
+                    </div>
+                </div>
+            </form>
+    </main>
+</body>
+</html>
